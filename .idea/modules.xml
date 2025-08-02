@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/KRAINET.iml" filepath="$PROJECT_DIR$/KRAINET.iml" />
+      <module fileurl="file://$PROJECT_DIR$/authentication_service/authentication_service.iml" filepath="$PROJECT_DIR$/authentication_service/authentication_service.iml" />
     </modules>
   </component>
 </project>

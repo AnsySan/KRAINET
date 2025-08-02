@@ -8,9 +8,22 @@
         <outputRelativeToContentRoot value="true" />
         <module name="notification_service" />
       </profile>
+      <profile name="Annotation profile for authentication_service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.5.Final/mapstruct-processor-1.5.5.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar" />
+        </processorPath>
+        <module name="authentication_service" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="authentication_service" target="17" />
+      <module name="authentication_service.main" target="17" />
+      <module name="authentication_service.test" target="17" />
+      <module name="notification_service.main" target="17" />
+      <module name="notification_service.test" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
