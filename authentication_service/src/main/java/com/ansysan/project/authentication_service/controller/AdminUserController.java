@@ -1,9 +1,10 @@
 package com.ansysan.project.authentication_service.controller;
 
-import com.ansysan.project.authentication_service.dto.RegistrationRequest;
-import com.ansysan.project.authentication_service.dto.UserDto;
-import com.ansysan.project.authentication_service.service.AuthenticationService;
-import com.ansysan.project.authentication_service.service.UserService;
+import com.ansysan.project.authentication_service.dto.request.RegistrationRequest;
+import com.ansysan.project.authentication_service.dto.response.UserResponse;
+import com.ansysan.project.authentication_service.entity.User;
+import com.ansysan.project.authentication_service.service.authentication.AuthenticationService;
+import com.ansysan.project.authentication_service.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -43,9 +44,30 @@ public class AdminUserController {
     )
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto create(@RequestBody @Valid RegistrationRequest registrationRequestDto) {
+    public UserResponse create(@RequestBody @Valid RegistrationRequest registrationRequestDto) {
         log.info("Create user: {}", registrationRequestDto);
         return authenticationService.registration(registrationRequestDto);
+    }
+
+    @Operation(
+            summary = "Update user",
+            description = "Updates a user",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Update user",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = UserResponse.class))
+            ),
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "user successfully updated"),
+                    @ApiResponse(responseCode = "400", description = "Invalid create")
+            }
+
+    )
+    @PatchMapping("{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponse update(@PathVariable("userId") Long userId, @RequestBody @Valid UserResponse userResponseDto) {
+        log.info("Update user: {}", userResponseDto);
+        return userService.update(userId, userResponseDto);
     }
 
     @Operation(
@@ -73,9 +95,8 @@ public class AdminUserController {
     )
     @GetMapping("get/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto getUser(@PathVariable("userId") Long userId) {
+    public UserResponse getUser(@PathVariable("userId") Long userId) {
         log.info("Get user: {}", userId);
-        return userService.getUserById(userId);
+        return userService.findById(userId);
     }
-
 }

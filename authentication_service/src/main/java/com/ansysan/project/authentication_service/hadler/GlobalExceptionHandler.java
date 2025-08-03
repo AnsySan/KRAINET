@@ -1,7 +1,8 @@
 package com.ansysan.project.authentication_service.hadler;
 
-import com.ansysan.project.authentication_service.dto.ErrorResponse;
+import com.ansysan.project.authentication_service.dto.response.ErrorResponse;
 import com.ansysan.project.authentication_service.exception.DataValidationException;
+import com.ansysan.project.authentication_service.exception.InvalidTokenException;
 import com.ansysan.project.authentication_service.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -43,6 +43,13 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(NotFoundException e, HttpServletRequest request) {
         log.error("Not found: {}", e.getMessage());
+        return buildErrorResponse(e, request);
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleNotFoundException(InvalidTokenException e, HttpServletRequest request) {
+        log.error("Invalid token: {}", e.getMessage());
         return buildErrorResponse(e, request);
     }
 

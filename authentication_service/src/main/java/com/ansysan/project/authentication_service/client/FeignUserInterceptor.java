@@ -1,6 +1,6 @@
 package com.ansysan.project.authentication_service.client;
 
-import com.ansysan.project.authentication_service.config.UserContext;
+import com.ansysan.project.authentication_service.config.context.UserContext;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.ansysan.project.authentication_service.mapper;
 
-import com.ansysan.project.authentication_service.dto.UserDto;
+import com.ansysan.project.authentication_service.dto.response.UserResponse;
 import com.ansysan.project.authentication_service.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -9,7 +9,7 @@ import org.mapstruct.ReportingPolicy;
 public interface UserMapper {
 
 
-    User toEntity(UserDto userDto);
+    User toEntity(UserResponse userResponse);
 
-    UserDto toDto(User user);
+    UserResponse toDto(User user);
 }

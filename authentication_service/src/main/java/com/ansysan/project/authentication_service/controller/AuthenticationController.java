@@ -1,10 +1,10 @@
 package com.ansysan.project.authentication_service.controller;
 
-import com.ansysan.project.authentication_service.dto.LoginRequest;
-import com.ansysan.project.authentication_service.dto.RegistrationRequest;
-import com.ansysan.project.authentication_service.dto.TokenResponse;
-import com.ansysan.project.authentication_service.dto.UserDto;
-import com.ansysan.project.authentication_service.service.AuthenticationService;
+import com.ansysan.project.authentication_service.dto.request.LoginRequest;
+import com.ansysan.project.authentication_service.dto.request.RegistrationRequest;
+import com.ansysan.project.authentication_service.dto.response.TokenResponse;
+import com.ansysan.project.authentication_service.dto.response.UserResponse;
+import com.ansysan.project.authentication_service.service.authentication.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -42,7 +42,7 @@ public class AuthenticationController {
     )
     @PostMapping("/registration")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto registration(@RequestBody @Valid RegistrationRequest registrationRequestDto) {
+    public UserResponse registration(@RequestBody @Valid RegistrationRequest registrationRequestDto) {
         log.info("Registration request: {}", registrationRequestDto);
         return authenticationService.registration(registrationRequestDto);
     }

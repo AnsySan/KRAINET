@@ -1,7 +1,7 @@
 package com.ansysan.project.authentication_service.security;
 
-import com.ansysan.project.authentication_service.config.JwtConfig;
-import com.ansysan.project.authentication_service.service.UserService;
+import com.ansysan.project.authentication_service.config.security.JwtConfig;
+import com.ansysan.project.authentication_service.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
-    private final UserService userService;
+    private final UserDetailsServiceImpl userDetailsService;
     private final JwtConfig jwtConfig;
 
     @Override
@@ -38,7 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
         jwt = authHeader.substring(jwtConfig.getPrefix().length());
         username = jwtProvider.extractUsername(jwt);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userService.loadUserByUsername(username);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (jwtProvider.validateToken(jwt)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails,

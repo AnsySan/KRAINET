@@ -1,6 +1,6 @@
 package com.ansysan.project.authentication_service.security;
 
-import com.ansysan.project.authentication_service.config.JwtConfig;
+import com.ansysan.project.authentication_service.config.security.JwtConfig;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

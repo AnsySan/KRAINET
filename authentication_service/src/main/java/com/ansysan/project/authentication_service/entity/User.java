@@ -1,5 +1,6 @@
 package com.ansysan.project.authentication_service.entity;
 
+import com.ansysan.project.authentication_service.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@Table(name = "user")
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
