@@ -1,4 +1,4 @@
-package com.ansysan.project.authentication_service.config;
+package com.ansysan.project.authentication_service.config.rest;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

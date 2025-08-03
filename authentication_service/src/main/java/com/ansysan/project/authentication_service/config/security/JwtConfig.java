@@ -1,4 +1,4 @@
-package com.ansysan.project.authentication_service.config;
+package com.ansysan.project.authentication_service.config.security;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
-package com.ansysan.project.authentication_service.service;
+package com.ansysan.project.authentication_service.service.jwt;
 
-import com.ansysan.project.authentication_service.dto.TokenResponse;
+import com.ansysan.project.authentication_service.dto.response.TokenResponse;
 import com.ansysan.project.authentication_service.entity.User;
 
 public interface JwtService {

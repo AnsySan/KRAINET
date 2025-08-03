@@ -1,4 +1,4 @@
-package com.ansysan.project.authentication_service.config;
+package com.ansysan.project.authentication_service.config.dateTime;
 
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;

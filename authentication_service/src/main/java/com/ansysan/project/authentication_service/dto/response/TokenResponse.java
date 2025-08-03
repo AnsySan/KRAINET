@@ -1,4 +1,4 @@
-package com.ansysan.project.authentication_service.dto;
+package com.ansysan.project.authentication_service.dto.response;
 
 import lombok.*;
 

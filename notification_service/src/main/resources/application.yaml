@@ -1,0 +1,53 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: Postgres
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+  data:
+    kafka:
+      port: 9092
+      host: localhost
+      group-id: notification_service
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: xxxxxxxxx@gmail.com
+    password: xxxxxxxxx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            connectiontimeout: 5000
+            timeout: 5000
+            writetimeout: 5000
+
+  messages:
+    basename: messages
+
+server:
+  port: 8093
+
+logging:
+  level:
+    root: info
+
+authentication-service:
+  host: localhost
+  port: 8092

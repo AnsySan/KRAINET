@@ -1,4 +1,4 @@
-package com.ansysan.project.authentication_service.config;
+package com.ansysan.project.authentication_service.config.kafka;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Value;

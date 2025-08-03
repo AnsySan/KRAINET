@@ -1,7 +1,8 @@
-package com.ansysan.project.authentication_service.config;
+package com.ansysan.project.authentication_service.config.security;
 
 import com.ansysan.project.authentication_service.security.JwtFilter;
-import com.ansysan.project.authentication_service.service.UserService;
+import com.ansysan.project.authentication_service.service.UserDetailsServiceImpl;
+import com.ansysan.project.authentication_service.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +34,7 @@ import java.util.List;
 @Slf4j
 public class SecurityConfig {
 
-    private final UserService userService;
+    private final UserDetailsServiceImpl userService;
 
     private final JwtFilter jwtFilter;
 

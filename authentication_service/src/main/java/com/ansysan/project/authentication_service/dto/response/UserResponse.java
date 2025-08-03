@@ -1,4 +1,4 @@
-package com.ansysan.project.authentication_service.dto;
+package com.ansysan.project.authentication_service.dto.response;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDto {
+public class UserResponse {
 
     private long id;
 
