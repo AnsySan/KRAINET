@@ -30,18 +30,16 @@ public class User implements UserDetails {
 
     private String email;
 
-    private String phone;
-
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    private Boolean isBanned;
-
-    private LocalDateTime bannedAt;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "token_id")
+    private Token token;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

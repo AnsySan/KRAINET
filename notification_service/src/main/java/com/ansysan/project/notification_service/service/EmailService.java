@@ -1,10 +1,9 @@
 package com.ansysan.project.notification_service.service;
 
-import com.ansysan.project.notification_service.dto.UserDto;
-import com.ansysan.project.notification_service.event.UserEventDto;
+import com.ansysan.project.notification_service.dto.NotificationRequest;
+import com.ansysan.project.notification_service.handler.EmailException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -15,22 +14,18 @@ import org.springframework.stereotype.Service;
 public class EmailService implements NotificationService {
 
     private final JavaMailSender javaMailSender;
-    @Value("${spring.mail.username}")
-    private String username;
 
     @Override
-    public void send(UserEventDto user, String message) {
+    public void send(NotificationRequest notificationRequest) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom(username);
-        mailMessage.setTo(user.getEmail());
-        mailMessage.setSubject("Notification");
-        mailMessage.setText(message);
-
+        mailMessage.setTo(notificationRequest.getTo());
+        mailMessage.setSubject(notificationRequest.getSubject());
+        mailMessage.setText(notificationRequest.getBody());
         try {
             javaMailSender.send(mailMessage);
-            log.info("Message sent successfully to {}", user.getEmail());
+            log.error("Email sent to {}", notificationRequest.getTo());
         } catch (Exception e) {
-            throw new RuntimeException("Error during email sending");
+            throw new EmailException("Error during email sending");
         }
     }
 }

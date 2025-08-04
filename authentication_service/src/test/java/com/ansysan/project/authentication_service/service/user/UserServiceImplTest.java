@@ -44,7 +44,6 @@ public class UserServiceImplTest {
         user.setId(1L);
         user.setUsername("testuser");
         user.setEmail("test@example.com");
-        user.setIsBanned(false);
 
         userResponse = new UserResponse();
         userResponse.setId(1L);
