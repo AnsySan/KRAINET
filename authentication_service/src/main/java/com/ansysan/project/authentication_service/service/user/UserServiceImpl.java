@@ -9,6 +9,7 @@ import com.ansysan.project.authentication_service.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,11 +29,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserResponse findByUsername(String email) {
+        User user = userRepository.findByUsername(email).orElseThrow(() -> new NotFoundException("User not found"));
+        return userMapper.toDto(user);
+    }
+
+    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
     @Override
+    @Transactional
     public void deleteUser(long id) {
         log.debug("Deleting user: {}", id);
         userValidator.validateUserExistence(id);
@@ -49,12 +57,4 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(userRepository.save(user));
     }
 
-    @Override
-    public void banUserByIds(long id) {
-        log.debug("Banning user: {}", id);
-        User user = userValidator.validateUserExistence(id);
-        user.setIsBanned(true);
-        userRepository.save(user);
-        log.debug("Banned user: {}", id);
-    }
 }

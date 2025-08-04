@@ -1,9 +1,9 @@
 package com.ansysan.project.notification_service.service;
 
-import com.ansysan.project.notification_service.dto.UserDto;
+import com.ansysan.project.notification_service.event.UserEventDto;
 
 public interface NotificationService {
 
-    void send(UserDto user, String message);
+    void send(UserEventDto user, String message);
 
 }

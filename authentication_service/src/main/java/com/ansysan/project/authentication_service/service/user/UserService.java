@@ -9,12 +9,12 @@ public interface UserService  {
 
     UserResponse findById(Long id);
 
+    UserResponse findByUsername(String email);
+
     List<User> findAll();
 
     void deleteUser(long id);
 
     UserResponse update(Long id, UserResponse userResponse);
-
-    void banUserByIds(long id);
 
 }

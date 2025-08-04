@@ -10,6 +10,7 @@ import com.ansysan.project.authentication_service.repository.UserRepository;
 import com.ansysan.project.authentication_service.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +25,7 @@ public class JwtServiceImpl implements JwtService {
     private final TokenRepository tokenRepository;
 
     @Override
-    public TokenResponse generateToken(User user) {
+    public TokenResponse generateToken(UserDetails user) {
         log.debug("Generating token");
         String accessToken = jwtProvider.generateAccessToken(user);
         String refreshToken = jwtProvider.generateRefreshToken(user);
@@ -33,7 +34,6 @@ public class JwtServiceImpl implements JwtService {
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .userId(user.getId())
                 .build();
     }
 

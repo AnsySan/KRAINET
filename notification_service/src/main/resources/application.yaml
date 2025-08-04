@@ -42,7 +42,7 @@ spring:
     basename: messages
 
 server:
-  port: 8093
+  port: 8091
 
 logging:
   level:

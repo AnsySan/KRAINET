@@ -11,11 +11,12 @@ import com.ansysan.project.authentication_service.repository.TokenRepository;
 import com.ansysan.project.authentication_service.repository.UserRepository;
 import com.ansysan.project.authentication_service.service.UserDetailsServiceImpl;
 import com.ansysan.project.authentication_service.service.jwt.JwtService;
-import com.ansysan.project.authentication_service.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
@@ -39,10 +40,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
         );
 
-        User user = (User) userDetailsService.loadUserByUsername(loginRequest.getUsername());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
 
-        log.debug("User: {}", user);
-        return jwtService.generateToken(user);
+        return jwtService.generateToken(userDetails);
     }
 
     @Override

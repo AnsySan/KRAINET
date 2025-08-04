@@ -1,5 +1,6 @@
 package com.ansysan.project.notification_service.client;
 
+import com.ansysan.project.notification_service.config.context.UserContext;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;

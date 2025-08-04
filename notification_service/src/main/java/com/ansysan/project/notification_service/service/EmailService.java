@@ -1,6 +1,7 @@
 package com.ansysan.project.notification_service.service;
 
 import com.ansysan.project.notification_service.dto.UserDto;
+import com.ansysan.project.notification_service.event.UserEventDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +19,7 @@ public class EmailService implements NotificationService {
     private String username;
 
     @Override
-    public void send(UserDto user, String message) {
+    public void send(UserEventDto user, String message) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(username);
         mailMessage.setTo(user.getEmail());

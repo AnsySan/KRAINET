@@ -30,7 +30,7 @@ spring:
     change-log: classpath:/db/migration/changelog/db.changelog-master.yaml
 
 server:
-  port: 9000
+  port: 8090
   servlet:
     context-path: /v1/api
 
