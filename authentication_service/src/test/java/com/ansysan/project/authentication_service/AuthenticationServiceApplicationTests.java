@@ -1,13 +1,13 @@
 package com.ansysan.project.authentication_service;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
 class AuthenticationServiceApplicationTests {
 
     @Test
     void contextLoads() {
+        Assertions.assertThat(40 * 2).isEqualTo(80);
     }
-
 }

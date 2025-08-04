@@ -21,8 +21,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
@@ -49,13 +53,13 @@ class AuthServiceImplTest {
     @InjectMocks
     private AuthenticationServiceImpl authenticationService;
 
-    private User user;
     private TokenResponse tokenResponse;
     private UserResponse userResponse;
+    private LoginRequest loginRequest;
 
     @BeforeEach
     void setUp() {
-        user = User.builder()
+        User user = User.builder()
                 .id(1L)
                 .username("testuser")
                 .password("encodedPassword")
@@ -63,26 +67,40 @@ class AuthServiceImplTest {
                 .role(Role.USER)
                 .build();
 
-        tokenResponse = new TokenResponse("accessToken", "refreshToken", 1L);
+        loginRequest = LoginRequest.builder()
+                .username("username")
+                .password("password")
+                .build();
+
+        tokenResponse = new TokenResponse("accessToken", "refreshToken");
         userResponse = new UserResponse();
         userResponse.setId(1L);
         userResponse.setUsername("testuser");
     }
 
     @Test
-    void login_ShouldReturnToken_WhenCredentialsAreValid() {
-        LoginRequest loginRequest = new LoginRequest("testuser", "password");
+    void login_ShouldAuthenticateAndReturnTokenResponse() {
 
-        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(user);
-        when(jwtService.generateToken(user)).thenReturn(tokenResponse);
-
-        TokenResponse result = authenticationService.login(loginRequest);
-
-        verify(authenticationManager).authenticate(
-                new UsernamePasswordAuthenticationToken("testuser", "password")
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+                "username",
+                "password",
+                Collections.singletonList((GrantedAuthority) () -> "USER")
         );
 
-        assertThat(result).isEqualTo(tokenResponse);
+        when(userDetailsService.loadUserByUsername("username")).thenReturn(userDetails);
+        when(jwtService.generateToken(userDetails)).thenReturn(tokenResponse);
+
+        TokenResponse actualTokenResponse = authenticationService.login(loginRequest);
+
+        verify(authenticationManager).authenticate(
+                new UsernamePasswordAuthenticationToken("username", "password")
+        );
+        verify(userDetailsService).loadUserByUsername("username");
+        verify(jwtService).generateToken(userDetails);
+
+        assertThat(actualTokenResponse).isNotNull();
+        assertThat(actualTokenResponse.getAccessToken()).isEqualTo("accessToken");
+        assertThat(actualTokenResponse.getRefreshToken()).isEqualTo("refreshToken");
     }
 
     @Test

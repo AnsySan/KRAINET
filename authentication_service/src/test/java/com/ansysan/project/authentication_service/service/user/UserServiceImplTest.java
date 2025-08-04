@@ -6,6 +6,7 @@ import com.ansysan.project.authentication_service.exception.NotFoundException;
 import com.ansysan.project.authentication_service.mapper.UserMapper;
 import com.ansysan.project.authentication_service.repository.UserRepository;
 import com.ansysan.project.authentication_service.service.UserDetailsServiceImpl;
+import com.ansysan.project.authentication_service.validator.UserValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,15 +26,14 @@ public class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private UserValidator userValidator;
 
     @Mock
     private UserMapper userMapper;
 
     @InjectMocks
     private UserServiceImpl userService;
-
-    @InjectMocks
-    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     private User user;
     private UserResponse userResponse;
@@ -52,46 +53,55 @@ public class UserServiceImplTest {
 
 
     @Test
-    void getUserById_ShouldReturnUserResponse_WhenExists() {
+    void findById_ShouldReturnUserResponse_WhenUserExists() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(userMapper.toDto(user)).thenReturn(userResponse);
 
-        var result = userService.findById(1L);
+        UserResponse result = userService.findById(1L);
 
         assertThat(result).isEqualTo(userResponse);
+        verify(userRepository).findById(1L);
     }
 
     @Test
-    void getUserById_ShouldThrowException_WhenUserNotFound() {
+    void findById_ShouldThrowNotFoundException_WhenUserDoesNotExist() {
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> userService.findById(1L))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("1");
+                .hasMessage("User not found");
     }
 
     @Test
-    void deleteUser_ShouldCallDeleteById() {
+    void findAll_ShouldReturnUserList() {
+        List<User> users = List.of(user);
+        when(userRepository.findAll()).thenReturn(users);
+
+        List<User> result = userService.findAll();
+
+        assertThat(result).hasSize(1).contains(user);
+        verify(userRepository).findAll();
+    }
+
+    @Test
+    void deleteUser_ShouldCallValidatorAndRepository() {
+        when(userValidator.validateUserExistence(1L)).thenReturn(user);
+
         userService.deleteUser(1L);
 
-        verify(userRepository, times(1)).deleteById(1L);
+        verify(userValidator).validateUserExistence(1L);
+        verify(userRepository).deleteById(1L);
     }
 
     @Test
-    void findById_ShouldReturnUser_WhenExists() {
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+    void update_ShouldUpdateUserAndReturnDto() {
+        when(userValidator.validateUserExistence(1L)).thenReturn(user);
+        when(userRepository.save(any(User.class))).thenReturn(user);
+        when(userMapper.toDto(user)).thenReturn(userResponse);
 
-        var result = userService.findById(1L);
+        UserResponse result = userService.update(1L, userResponse);
 
-        assertThat(result).isEqualTo(user);
+        assertThat(result.getUsername()).isEqualTo("testuser");
     }
 
-    @Test
-    void findById_ShouldThrowException_WhenNotExists() {
-        when(userRepository.findById(1L)).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> userService.findById(1L))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("User not found1");
-    }
 }

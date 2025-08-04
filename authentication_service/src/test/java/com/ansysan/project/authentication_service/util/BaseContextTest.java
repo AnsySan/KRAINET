@@ -27,6 +27,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 @AutoConfigureMockMvc
 public class BaseContextTest {
+
     @Autowired
     protected MockMvc mockMvc;
 
